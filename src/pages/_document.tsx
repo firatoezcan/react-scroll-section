@@ -3,14 +3,14 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 const MetaConfig = {
   title: "React Scroll Sections Example",
   description: "Quick example of sane scroll sections without viewport units",
-  url: "https://firatoezcan.github.io/react-scroll-section",
+  url: "https://react-scroll-section.vercel.app",
 };
 
 const isDevelopment = process.env.NODE_ENV === "development";
 
 export default class MyDocument extends Document {
   render() {
-    const faviconFolder = isDevelopment ? "" : `${MetaConfig.url}/favicon`;
+    const faviconFolder = isDevelopment ? "/favicon" : `${MetaConfig.url}/favicon`;
     return (
       <Html lang="en">
         <Head>
