@@ -55,7 +55,7 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
 
   const handleTouchStart = (event: TouchEvent) => {
     event.preventDefault();
-    startTouch.current.startY = event.touches[0].pageY;
+    // startTouch.current.startY = event.touches[0].pageY;
   };
   const handlePointerStart = (event: PointerEvent) => {
     event.preventDefault();
@@ -77,7 +77,7 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
   useEffect(() => {
     const hasTouch = window.ontouchstart || navigator.msMaxTouchPoints > 0 || navigator.maxTouchPoints;
     if (!hasTouch) return;
-    window.scrollBy(0, 1);
+    // window.scrollBy(0, 1);
     document.addEventListener("touchstart", handleTouchStart, { passive: false });
     document.addEventListener("pointerdown", handlePointerStart, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
