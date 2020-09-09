@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useRef, useEffect, useMemo } from "react";
 import cn from "classnames";
 import { closeEnough } from "src/utils";
+import { useEffectAfterMount } from "src/hooks/useEffectAfterMount";
 
 const ScrollSectionContext = React.createContext({ activeSection: 0 });
 
@@ -51,28 +52,23 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
     };
   });
 
-  const touchRef = useRef({ startY: 0, previousY: 0, triggered: false });
+  const startTouch = useRef({ startY: 0, previousY: 0 });
 
   const handleTouchStart = (event: TouchEvent) => {
     event.preventDefault();
-    const startY = event.touches[0].pageY;
-    touchRef.current.startY = startY;
-    if (startY !== touchRef.current.startY) touchRef.current.triggered = false;
+    startTouch.current.startY = event.touches[0].pageY;
   };
   const handlePointerStart = (event: PointerEvent) => {
     event.preventDefault();
-    const startY = event.pageY;
-    touchRef.current.startY = startY;
-    if (startY !== touchRef.current.startY) touchRef.current.triggered = false;
+    startTouch.current.startY = event.pageY;
   };
 
   const handleTouchAndPointerMove = (event: TouchEvent | PointerEvent, currentY: number) => {
     event.preventDefault();
-    const { startY, previousY } = touchRef.current;
-    if (touchRef.current.triggered || interactionDisabled || closeEnough(previousY, currentY)) return;
-    touchRef.current.previousY = currentY;
+    const { startY, previousY } = startTouch.current;
+    if (interactionDisabled || closeEnough(previousY, currentY)) return;
+    startTouch.current.previousY = currentY;
     if (Math.abs(startY - currentY) < window.innerHeight / 20) return;
-    touchRef.current.triggered = true;
     if (startY > currentY) moveSectionBy(1);
     else moveSectionBy(-1);
   };
