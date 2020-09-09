@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState, useRef, useEffect, useMemo } from "react";
 import cn from "classnames";
 import { closeEnough } from "src/utils";
-import { useEffectAfterMount } from "src/hooks/useEffectAfterMount";
 
 const ScrollSectionContext = React.createContext({ activeSection: 0 });
 
