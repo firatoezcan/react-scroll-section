@@ -71,7 +71,7 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
     if (startY > currentY) moveSectionBy(1);
     else moveSectionBy(-1);
   };
-  const handleTouchMove = (e: TouchEvent) => handleTouchAndPointerMove(e, e.touches[0].pageY);
+  const handleTouchMove = (e: TouchEvent) => e.preventDefault() // handleTouchAndPointerMove(e, e.touches[0].pageY);
   const handlePointerMove = (e: PointerEvent) => e.pointerType != "mouse" && handleTouchAndPointerMove(e, e.pageY);
 
   useEffect(() => {
