@@ -51,23 +51,28 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
     };
   });
 
-  const startTouch = useRef({ startY: 0, previousY: 0 });
+  const touchRef = useRef({ startY: 0, previousY: 0, triggered: false });
 
   const handleTouchStart = (event: TouchEvent) => {
     event.preventDefault();
-    startTouch.current.startY = event.touches[0].pageY;
+    const startY = event.touches[0].pageY;
+    touchRef.current.startY = startY;
+    if (startY !== touchRef.current.startY) touchRef.current.triggered = false;
   };
   const handlePointerStart = (event: PointerEvent) => {
     event.preventDefault();
-    startTouch.current.startY = event.pageY;
+    const startY = event.pageY;
+    touchRef.current.startY = startY;
+    if (startY !== touchRef.current.startY) touchRef.current.triggered = false;
   };
 
   const handleTouchAndPointerMove = (event: TouchEvent | PointerEvent, currentY: number) => {
     event.preventDefault();
-    const { startY, previousY } = startTouch.current;
-    if (interactionDisabled || closeEnough(previousY, currentY)) return;
-    startTouch.current.previousY = currentY;
+    const { startY, previousY } = touchRef.current;
+    if (touchRef.current.triggered || interactionDisabled || closeEnough(previousY, currentY)) return;
+    touchRef.current.previousY = currentY;
     if (Math.abs(startY - currentY) < window.innerHeight / 20) return;
+    touchRef.current.triggered = true;
     if (startY > currentY) moveSectionBy(1);
     else moveSectionBy(-1);
   };
@@ -77,6 +82,7 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
   useEffect(() => {
     const hasTouch = window.ontouchstart || navigator.msMaxTouchPoints > 0 || navigator.maxTouchPoints;
     if (!hasTouch) return;
+    window.scrollBy(0, 1);
     document.addEventListener("touchstart", handleTouchStart, { passive: false });
     document.addEventListener("pointerdown", handlePointerStart, { passive: false });
     document.addEventListener("touchmove", handleTouchMove, { passive: false });
@@ -87,7 +93,7 @@ const ScrollSectionContainer: ScrollSectionContainer = (props) => {
       document.removeEventListener("touchmove", handleTouchMove, false);
       document.removeEventListener("pointermove", handlePointerMove, false);
     };
-  });
+  }, [typeof window]);
 
   return (
     <ScrollSectionContext.Provider value={{ activeSection }}>
