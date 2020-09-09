@@ -41,6 +41,13 @@ export default class MyDocument extends Document {
           <meta property="twitter:title" content={MetaConfig.title} />
           <meta property="twitter:description" content={MetaConfig.description} />
           <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"></script>
+          <style jsx global>{`
+            html,
+            body,
+            #__next {
+              height: 100%;
+            }
+          `}</style>
         </Head>
         <body>
           <Main />

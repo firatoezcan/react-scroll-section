@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === 'production') {
         './src/components/**/*.{ts,tsx}',
       ],
       defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+      whitelistPatternsChildren: [/#__next$/, /^html$/, /^body$/]
     },
   ])
 }
